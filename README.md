@@ -38,9 +38,12 @@ Any agent that reads Markdown context files can also just be pointed at `SKILL.m
 - Auth (API key, base URL, required headers)
 - Creating a payment (`directChannel`, request/response, fraud-check pitfalls)
 - Payment method values, transaction/refund/subscription statuses
-- Refunds
-- IPN webhooks: payload structure, signature verification (SHA-256, with a PHP example),
-  retry behavior, live IP validation
+- Refund eligibility, tracking `refundId`, and completion status
+- Status checks and recovery after timeouts without assuming `control` is idempotent
+- Online Payments and DirectBilling IPNs: separate payloads, signatures, and acknowledgements
+- SHA-256 verification with a PHP example and cross-language conversion rules
+- Durable IPN storage, duplicate delivery handling, and atomic fulfillment
+- Service/order validation, trusted proxies, backend-only secrets, and live IP validation
 - Brief pointers to BLIK Level 0 / One-Click / Recurrent, DirectBilling (DCB), deferred
   payments (PayPo, Twisto, BLIK Pay Later), and SMS Premium
 - Official SDKs
