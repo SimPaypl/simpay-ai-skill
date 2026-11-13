@@ -47,6 +47,7 @@ Any agent that reads Markdown context files can also just be pointed at `SKILL.m
 - Brief pointers to BLIK Level 0 / One-Click / Recurrent, DirectBilling (DCB), deferred
   payments (PayPo, Twisto, BLIK Pay Later), and SMS Premium
 - Official SDKs
+- Reporting API problems to SimPay through `POST /feedback`
 - A pre-launch checklist
 
 Source docs: https://docs.simpay.pl (full index at https://docs.simpay.pl/llms.txt).
