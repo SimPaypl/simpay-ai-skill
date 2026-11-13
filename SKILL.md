@@ -35,7 +35,8 @@ Accept: application/json
 ```
 
 Errors are standard HTTP status codes with a JSON body; validation errors (422) include
-an `errors` object keyed by field.
+an `errors` object keyed by field. Error responses for a valid API key also include
+`feedbackUrl` (see [Reporting API problems](#reporting-api-problems)).
 
 Full OpenAPI/Swagger spec: https://docs.simpay.pl/_bundle/@l10n/en/apis/index.yaml
 (treat it as source of truth for exhaustive request/response schemas and error codes —
@@ -369,6 +370,37 @@ Contract: https://docs.simpay.pl/en/notifications/directbilling.md.
 | Python | https://github.com/SimPaypl/SimPay-API-Python |
 
 Check whether one exists for your stack before hand-rolling an HTTP client.
+
+## Reporting API problems
+
+When the SimPay API itself gets in your way, tell the SimPay team with
+`POST https://api.simpay.pl/feedback`. Any enabled API key works; no extra ability is needed.
+
+Send a report when an endpoint returns a server error or contradicts these docs, when a
+response is ambiguous or misleading, or when a capability your integration needs is missing,
+even if a retry recovered. Do not report validation errors caused by your own input that you
+already fixed.
+
+```http
+POST /feedback
+Authorization: Bearer <API_KEY>
+Content-Type: application/json
+
+{
+  "kind": "confusing_result",
+  "content": "GET /payment/{serviceId}/transactions returned an empty list without saying whether filters matched nothing. Retry returned the same.",
+  "endpoint": "GET /payment/{serviceId}/transactions",
+  "correlation_id": "478a94266b77f07125c935c97534b6d2"
+}
+```
+
+- `kind`: `bug`, `feature_request`, or `confusing_result`.
+- `content` (max 4000 chars): expected behavior, actual result, and whether a retry helped.
+- `endpoint` and `correlation_id` are optional; copy `correlation_id` from the
+  `X-Correlation-ID` response header so SimPay can find the request.
+- Remove API keys, IPN keys, customer data, and payment data before sending.
+- The API answers `201` with the report `id`, or `429 FEEDBACK_LIMIT_EXCEEDED` after 20
+  reports per client in an hour.
 
 ## Checklist before going live
 
